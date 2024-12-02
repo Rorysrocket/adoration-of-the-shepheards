@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Marker-Based Video AR&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.jsdelivr.net/npm/aframe"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.jsdelivr.net/npm/mind-ar-js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.jsdelivr.net/npm/mind-ar-js/aframe/dist/aframe-mindar.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body style="margin: 0; overflow: hidden;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a-scene mindar-image embedded color-space="sRGB"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Assets: Marker and Video --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a-assets&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;img id="marker-image" src="https://static.wixstatic.com/media/0a7532_34e3d906964b421c95b18552693a4997~mv2.png"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;video id="video" src="https://video.wixstatic.com/video/0a7532_e0dc0690c29043fcb0306eb5942e1f6e/1080p/mp4/file.mp4" loop crossorigin="anonymous"&gt;&lt;/video&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/a-assets&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Marker Target --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;mindar-image-targets&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;mindar-image-target src="#marker-image"&gt;&lt;/mindar-image-target&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/mindar-image-targets&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Video Overlay --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a-video</p>
+<p class="p1"><span class="Apple-converted-space">      </span>src="#video"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>position="0 0 0"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>rotation="0 0 0"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width="1" height="0.75"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>visible="false"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/a-video&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Camera --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a-camera position="0 0 0" look-controls&gt;&lt;/a-camera&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Script to Handle Visibility --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>// Wait for the scene to load</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.addEventListener("DOMContentLoaded", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const videoElement = document.querySelector("#video");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const videoOverlay = document.querySelector("a-video");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Listen for target found</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.querySelector("mindar-image-target").addEventListener("targetFound", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>videoOverlay.setAttribute("visible", true); // Make video visible</p>
+<p class="p1"><span class="Apple-converted-space">          </span>videoElement.play(); // Play video</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Listen for target lost</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.querySelector("mindar-image-target").addEventListener("targetLost", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>videoOverlay.setAttribute("visible", false); // Hide video</p>
+<p class="p1"><span class="Apple-converted-space">          </span>videoElement.pause(); // Pause video</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/a-scene&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
