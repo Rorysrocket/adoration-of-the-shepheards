@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marker-Based Video AR</title>
+  <script src="https://cdn.jsdelivr.net/npm/aframe"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar-js/aframe/dist/aframe-mindar.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+  <a-scene mindar-image embedded color-space="sRGB">
+    <!-- Assets: Marker and Video -->
+    <a-assets>
+      <img id="marker-image" src="https://static.wixstatic.com/media/0a7532_34e3d906964b421c95b18552693a4997~mv2.png">
+      <video id="video" src="https://video.wixstatic.com/video/0a7532_e0dc0690c29043fcb0306eb5942e1f6e/1080p/mp4/file.mp4" loop crossorigin="anonymous"></video>
+    </a-assets>
+
+    <!-- Marker Target -->
+    <mindar-image-targets>
+      <mindar-image-target src="#marker-image"></mindar-image-target>
+    </mindar-image-targets>
+
+    <!-- Video Overlay -->
+    <a-video
+      src="#video"
+      position="0 0 0"
+      rotation="0 0 0"
+      width="1" height="0.75"
+      visible="false">
+    </a-video>
+
+    <!-- Camera -->
+    <a-camera position="0 0 0" look-controls></a-camera>
+
+    <!-- Script to Handle Visibility -->
+    <script>
+      // Wait for the scene to load
+      document.addEventListener("DOMContentLoaded", () => {
+        const videoElement = document.querySelector("#video");
+        const videoOverlay = document.querySelector("a-video");
+
+        // Listen for target found
+        document.querySelector("mindar-image-target").addEventListener("targetFound", () => {
+          videoOverlay.setAttribute("visible", true); // Make video visible
+          videoElement.play(); // Play video
+        });
+
+        // Listen for target lost
+        document.querySelector("mindar-image-target").addEventListener("targetLost", () => {
+          videoOverlay.setAttribute("visible", false); // Hide video
+          videoElement.pause(); // Pause video
+        });
+      });
+    </script>
+  </a-scene>
+</body>
+</html>
